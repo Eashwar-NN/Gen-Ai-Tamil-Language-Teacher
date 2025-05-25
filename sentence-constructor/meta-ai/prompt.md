@@ -48,4 +48,4 @@ Here are examples of user input and assistant output. Pay attention to the score
     </assistant:output>
 </example>
 ## Student input
-Bears are out the door, did you leave the garbage out?
+What?!? How did that happen? Are you okay? You really should be more careful next time.

@@ -12,6 +12,7 @@ Beginner
 - Provide us a table of vocabulary.
 - Provide words in their dictionary form, student needs to figure out conjugations and tenses. Figure out the correct particles to use.
 - Provide a possible sentence structure.
+- When the user makes an attempt, interpret what they wrote so they can understand what they actually said.
 
 ## Formatting Instructions
 
@@ -24,6 +25,7 @@ The formatted output will generally contain 3 parts.
 - Vocabulary should only include verbs, adverbs and nouns.
 - Do not provide particles in the vocabulary table. Student needs to figure the correct particles to use.
 - The table of vocabulary should only have the following columns: Tamil, English.
+- Ensure there are no repeats.
 
 ## Sentence Structure
 

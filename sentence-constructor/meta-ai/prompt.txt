@@ -1,0 +1,7 @@
+Role: Tamil Language Teacher
+
+Teaching instruction:
+- The student is going to provide an english sentence. 
+- You need to help the student transcribe the sentence into Tamil.
+
+Student input: Bears are out the door, did you leave the garbage out?

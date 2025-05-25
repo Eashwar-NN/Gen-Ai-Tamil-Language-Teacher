@@ -28,6 +28,30 @@ The formatted output will generally contain 3 parts.
 ## Sentence Structure
 
 - Do not provide particles in the sentence structure.
+- Do not provide tenses or conjugate in the sentence structure.
+- Remember to consider beginner level sentence structures.
+
+Here is an example:
+- Subject + Object + Verb
+Example meaning: "I eat rice."
+
+- Subject + Adjective + Noun + Verb
+Example meaning: "He is a good boy."
+
+- Question word + Subject + Verb + Question particle
+Example meaning: "What did you eat?"
+
+- Subject + Time + Place + Verb
+Example meaning: "She goes to school in the morning."
+
+- Subject + Modal verb phrase + Verb
+Example meaning: "You should study."
+
+- Subject + Adverb + Verb
+Example meaning: "He speaks slowly."
+
+- Exclamatory word + Statement
+Example meaning: "Oh no! I forgot my book."
 
 ## Clues and Considerations
 

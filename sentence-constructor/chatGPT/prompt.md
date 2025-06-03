@@ -36,7 +36,7 @@ Your output should generally contain these sections in order:
 
 - Breakdown (Optional): If the user provides multiple sentences, state which one you are focusing on first.
 - Vocabulary Table:
-    - Columns: Tamil, English.
+    - Columns: Tamil (actual form), Tamil (romanization), English.
     - Content: Only relevant verbs, adverbs, and nouns from the student's sentence, in dictionary form.
     - No particles.
     - No repeat words.

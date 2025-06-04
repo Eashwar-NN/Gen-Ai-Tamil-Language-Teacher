@@ -2,7 +2,7 @@
 
 ## Model
 
-GPT-3.5
+GPT-4o
 
 Using it as it is free tier. It is good enough.
 

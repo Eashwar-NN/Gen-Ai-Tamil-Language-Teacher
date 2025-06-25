@@ -1,0 +1,206 @@
+openapi: 3.0.0
+info:
+  title: Language Learning Portal API
+  description: API for managing vocabulary learning and tracking study progress
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+components:
+  schemas:
+    Word:
+      type: object
+      properties:
+        tamil:
+          type: string
+        romaji:
+          type: string
+        english:
+          type: string
+        correct_count:
+          type: integer
+        wrong_count:
+          type: integer
+
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        word_count:
+          type: integer
+
+    StudySession:
+      type: object
+      properties:
+        id:
+          type: integer
+        activity_name:
+          type: string
+        group_name:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        review_items_count:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+
+    PaginatedResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        pagination:
+          type: object
+          properties:
+            current_page:
+              type: integer
+            total_pages:
+              type: integer
+            total_items:
+              type: integer
+            items_per_page:
+              type: integer
+
+paths:
+  /dashboard/quick-stats:
+    get:
+      summary: Get quick overview statistics
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_words:
+                    type: integer
+                  words_studied:
+                    type: integer
+                  total_study_sessions:
+                    type: integer
+                  average_accuracy:
+                    type: number
+                  study_streak_days:
+                    type: integer
+
+  /words:
+    get:
+      summary: Get paginated list of words
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse'
+
+  /study_sessions/{id}/words/{word_id}/review:
+    post:
+      summary: Record a word review result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: word_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correct:
+                  type: boolean
+              required:
+                - correct
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  word_id:
+                    type: integer
+                  session_id:
+                    type: integer
+                  correct:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date-time
+
+  /reset_history:
+    post:
+      summary: Reset all study history
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  reset_timestamp:
+                    type: string
+                    format: date-time
+
+  /full_reset:
+    post:
+      summary: Reset all data including words and groups
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  reset_timestamp:
+                    type: string
+                    format: date-time 

@@ -1,0 +1,23 @@
+{
+    "group_name": "Basic Greetings",
+    "words": [
+        {
+            "tamil": "வணக்கம்",
+            "romaji": "vanakkam",
+            "english": "hello",
+            "parts": {
+                "type": "greeting",
+                "formality": "neutral"
+            }
+        },
+        {
+            "tamil": "நன்றி",
+            "romaji": "nandri",
+            "english": "thank you",
+            "parts": {
+                "type": "gratitude",
+                "formality": "neutral"
+            }
+        }
+    ]
+} 

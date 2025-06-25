@@ -417,4 +417,35 @@ Mage is a task runner for Go.
 Lets list out the possible tasks we need for our lang portal.
 
 ### Initialize Database
-This will initialize the SQLite database.
+This will initialize the SQLite database called `words.db`
+
+### Migrate Database
+This will run a series of migration sql files on the database
+
+Migration live in the `migration` folder.
+The migration files will run in the order of their file name.
+The file names should look like this:
+
+```sql
+0001_init.sql
+0002_create_words_table.sql
+```
+
+### Seed Data
+This task will import json files and transform them into target data for our database.
+
+All seed files live in the `seeds` folder.
+All seed files should be loaded.
+
+In our task, we should have a DSL to specify each seed file and its expected group word name.
+```json
+[
+    {
+        "tamil": "வணக்கம்",
+        "romaji": "vanakkam",
+        "english": "hello",
+    },
+]
+
+```
+

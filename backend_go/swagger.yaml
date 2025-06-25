@@ -1,0 +1,448 @@
+openapi: 3.0.0
+info:
+  title: Language Learning Portal API
+  description: API for a language learning portal that manages vocabulary, study sessions, and learning progress
+  version: 1.0.0
+
+servers:
+  - url: /api
+    description: Base API path
+
+components:
+  schemas:
+    Word:
+      type: object
+      properties:
+        tamil:
+          type: string
+          example: "வணக்கம்"
+        romaji:
+          type: string
+          example: "vanakkam"
+        english:
+          type: string
+          example: "hello"
+        correct_count:
+          type: integer
+          example: 5
+        wrong_count:
+          type: integer
+          example: 2
+
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Basic Greetings"
+        word_count:
+          type: integer
+          example: 20
+
+    StudySession:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        activity_name:
+          type: string
+          example: "Vocabulary Quiz"
+        group_name:
+          type: string
+          example: "Basic Greetings"
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        review_items_count:
+          type: integer
+          example: 20
+
+    StudyActivity:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        name:
+          type: string
+          example: "Vocabulary Quiz"
+        thumbnail_url:
+          type: string
+          example: "https://example.com/thumbnail.jpg"
+        description:
+          type: string
+          example: "Practice your vocabulary with flashcards"
+
+    Pagination:
+      type: object
+      properties:
+        current_page:
+          type: integer
+          example: 1
+        total_pages:
+          type: integer
+          example: 5
+        total_items:
+          type: integer
+          example: 100
+        items_per_page:
+          type: integer
+          example: 20
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Error message here"
+
+paths:
+  /dashboard/quick-stats:
+    get:
+      summary: Get quick overview learning statistics
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_words:
+                    type: integer
+                  words_studied:
+                    type: integer
+                  total_study_sessions:
+                    type: integer
+                  average_accuracy:
+                    type: number
+                    format: float
+                  study_streak_days:
+                    type: integer
+
+  /dashboard/last_study_session:
+    get:
+      summary: Get information about the most recent study session
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudySession'
+
+  /dashboard/study_progress:
+    get:
+      summary: Get study progress statistics over time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  daily_stats:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: date
+                        total_words_studied:
+                          type: integer
+                        total_available_words:
+                          type: integer
+                        correct_percentage:
+                          type: number
+                  total_words_studied:
+                    type: integer
+                  total_available_words:
+                    type: integer
+                  average_accuracy:
+                    type: number
+
+  /words:
+    get:
+      summary: Get paginated list of words
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Word'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /words/{id}:
+    get:
+      summary: Get details of a specific word
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+        '404':
+          description: Word not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /groups:
+    get:
+      summary: Get paginated list of groups
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /groups/{id}:
+    get:
+      summary: Get details of a specific group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /groups/{id}/words:
+    get:
+      summary: Get all words in a specific group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Word'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /groups/{id}/study_sessions:
+    get:
+      summary: Get all study sessions for a specific group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StudySession'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /study_activities/{id}:
+    get:
+      summary: Get details of a specific study activity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyActivity'
+
+  /study_activities:
+    post:
+      summary: Create a new study activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group_id:
+                  type: integer
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  group_id:
+                    type: integer
+
+  /study_sessions/{id}/words/{word_id}/review:
+    post:
+      summary: Record a word review result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: word_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correct:
+                  type: boolean
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  word_id:
+                    type: integer
+                  session_id:
+                    type: integer
+                  correct:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date-time
+
+  /reset_history:
+    post:
+      summary: Reset all study history
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  reset_timestamp:
+                    type: string
+                    format: date-time
+
+  /full_reset:
+    post:
+      summary: Reset all data including words and groups
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  reset_timestamp:
+                    type: string
+                    format: date-time 
